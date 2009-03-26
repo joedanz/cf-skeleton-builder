@@ -5,13 +5,12 @@
 <!--- create images directory --->
 <cfdirectory action="create" directory="#ExpandPath('./tmp/images/')#" />
 
+<!--- get images list for template --->
+<cfdirectory action="list" directory="#ExpandPath('./skins/' & form.template & '/images/')#" name="images" />
+
 <!--- copy images for template --->
-<cfswitch expression="#form.skin#">
-
-	<cfcase value="default">
-		<cffile action="copy" source="#ExpandPath('./skins/default/images/')#header-bg.png" destination="#ExpandPath('./tmp/images/')#" />
-		<cffile action="copy" source="#ExpandPath('./skins/default/images/')#body-bg.png" destination="#ExpandPath('./tmp/images/')#" />
-		<cffile action="copy" source="#ExpandPath('./skins/default/images/')#footer-bg.png" destination="#ExpandPath('./tmp/images/')#" />
-	</cfcase>
-
-</cfswitch>
+<cfloop query="images">
+	<cfif compare(name,'.svn')>
+		<cffile action="copy" source="#ExpandPath('./skins/' & form.template & '/images/')##name#" destination="#ExpandPath('./tmp/images/')#" />
+	</cfif>
+</cfloop>

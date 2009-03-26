@@ -1,6 +1,6 @@
 body { 
 	margin:10px; 
-	background-color:#172841; 
+	background:#2b7fd2 url(../images/gradient.png) repeat-x; 
 }
 
 #container { 
@@ -45,4 +45,3 @@ ul li.wrap {
 	float:left; 
 	width:200px; 
 }
-

@@ -1,4 +1,4 @@
-<cfsetting enablecfoutputonly="true" showdebugoutput="false">
+<cfsetting enablecfoutputonly="true">
 
 <cfif isDefined("create")>
 	
@@ -74,8 +74,8 @@
 	</cfif>
 		
 	<!--- create zip file --->
-	<cfinclude template="./create/zip.cfm" />
-	
+<!---	<cfinclude template="./create/zip.cfm" />
+--->	
 </cfif>
 
 <cfoutput>
@@ -96,22 +96,17 @@
 <div id="header">ColdFusion Skeleton Site Creator</div>
 
 <div class="row" id="step1">
-	<label for="appName" class="step">Step 1: Enter an application name:</label> 
-	<input type="text" name="appName" size="30" id="appName" style="padding:2px;" />
-</div>
-
-<div class="row" id="step2">
-	<label for="title" class="step">Step 2: Enter a title for your app:</label> 
+	<label for="title" class="step">Step 1: Enter a title for your app:</label> 
 	<input type="text" name="title" size="30" id="title" style="padding:2px;" />
 </div>
 
-<div class="row" id="step3">
-	<label for="mapping" class="step">Step 3: Enter the mapping path:</label> 
+<div class="row" id="step2">
+	<label for="mapping" class="step">Step 2: Enter the mapping path:</label> 
 	<input type="text" name="mapping" size="30" id="mapping" style="padding:2px;" />
 </div>
 
-<div class="row" id="step4">
-	<label for="doctype" class="step">Step 4: Which doctype would you like to use?</label>
+<div class="row" id="step3">
+	<label for="doctype" class="step">Step 3: Which doctype would you like to use?</label>
 	<ul id="doctype">
 		<li class="wrap"><input type="radio" name="doctype" value="xhtml1tr" id="xhtml1tr" /> 
 			<label for="xhtml1tr">XHTML 1.0 Transitional</label></li>
@@ -126,8 +121,8 @@
 	</ul>
 </div>
 
-<div class="row" id="step5">
-	<label for="scripts" class="step">Step 5: Select any libraries to include: </label>
+<div class="row" id="step4">
+	<label for="scripts" class="step">Step 4: Select any libraries to include: </label>
 	<ul id="scripts">
 		<li class="wrap"><input type="checkbox" name="jquery" value="1" id="jquery" /> 
 			<label for="jquery">jQuery</label></li>
@@ -156,48 +151,49 @@
 			<label for="swfobject">SWFObject</label></li>
 	</ul>
 	<p><input type="radio" name="javascripts" value="linked" id="linked" /> <label for="linked">Linked</label> 
-		or <input type="radio" name="javascripts" value="downloaded" id="downloaded" /> <label for="downloaded">Downloaded</label>
+		or <input type="radio" name="javascripts" value="downloaded" id="downloaded" checked="checked" /> <label for="downloaded">Downloaded</label>
 	</p>
 	<div class="note">A 'js' directory will be created if any scripts are selected for download</div>
 </div>
 
-<div class="row" id="step6">
+<div class="row" id="step5">
+	<label for="template" class="step">Step 5: Choose a template for your application:</label>
+	<ul>
+	<cfset templateNum = 1>
+	<cfloop list="#request.templateList#" index="i">
+		<li style="vertical-align:top; float:left;"><input type="radio" name="template" value="#i#" id="t#i#"<cfif templateNum eq 1> checked="checked"</cfif> />
+			<img src="./skins/#i#/thumb.jpg" border="0" onclick="$('##t#i#').attr('checked','checked');" />&nbsp;&nbsp;&nbsp;</li>
+		<cfset templateNum = templateNum + 1>
+	</cfloop>
+	</ul>
+	<br clear="both" />
+</div>
 
-<label for="template" class="step">Step 6: Choose a template for your application:</label>
-<ul>
-<cfset templateNum = 1>
-<cfloop list="#request.templateList#" index="i">
-	<li style="vertical-align:top; float:left;"><input type="radio" name="template" value="#i#" id="t#i#"<cfif templateNum eq 1> checked="checked"</cfif> />
-		<img src="./skins/#i#/thumb.jpg" border="0" onclick="$('##t#i#').attr('checked','checked');" />&nbsp;&nbsp;&nbsp;</li>
-	<cfset templateNum = templateNum + 1>
-</cfloop>
-</ul><br clear="both" />
+<div class="row" id="step6">
+	<label for="ds" class="step">Step 6: Choose the datasource for your application:</label>
+	<cfselect name="dsource" id="dsource" style="padding:1px;" onchange="showTables();">
+		<option value="">None</option>
+		<cfif isDefined("session.adminpw")>
+			<cfset getDS = createObject("component","cfcs.AdminAPI").dsList(session.adminpw)>
+			<cfloop list="#getDS#" index="ds">
+			<option value="#ds#">#ds#</option>
+			</cfloop>
+		</cfif>
+	</cfselect>
 </div>
 
 <div class="row" id="step7">
-<label for="ds" class="step">Step 7: Choose the datasource for your application:</label>
-<cfselect name="dsource" id="dsource" style="padding:1px;" onchange="showTables();">
-	<option value="">None</option>
-	<cfif isDefined("session.adminpw")>
-		<cfset getDS = createObject("component","cfcs.AdminAPI").dsList(session.adminpw)>
-		<cfloop list="#getDS#" index="ds">
-		<option value="#ds#">#ds#</option>
-		</cfloop>
-	</cfif>
-</cfselect>
-</div>
-
-<div class="row" id="step8">
-<label class="step">Step 8: Select tables and views to create CFCs &amp; CRUD pages for:</label>
-<ul>
-<cfdiv bind="cfc:cfcs.AdminAPI.getTables({dsource})" />
-</ul><br style="clear:both;" />
+	<label class="step">Step 7: Select tables and views to create CFCs &amp; CRUD pages for:</label>
+	<ul>
+		<cfdiv bind="cfc:cfcs.AdminAPI.getTables({dsource})" />
+	</ul>
+	<br clear="both" />
 </div>
 
 <div class="row row-last">
-<input type="submit" value="Create Application" name="create" class="submit" />
-<h4>The following folders will be created by default:</h4>
-admin, cfcs, config, css, images, tags, templates
+	<input type="submit" value="Create Application" name="create" class="submit" />
+	<h4>The following folders will be created by default:</h4>
+	admin, cfcs, config, css, images, tags, templates
 </div>
 </cfform>
 </div>

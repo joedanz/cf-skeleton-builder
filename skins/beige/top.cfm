@@ -1,5 +1,5 @@
 <div id="container">
-	<div id="header"><span style="float:left;"><img src="#application.settings.mapping#/images/lrc_52x50.gif" height="50" width="52" border="0" alt="CECOM LRC Logo" />&nbsp;</span><cfif isDefined("session.loggedin") and session.loggedin is true><span id="menu2" style="float:right" class="s12"><a href="#application.settings.mapping#/index.cfm">Home</a> &##183; <cfif session.user.admin eq 1><a href="#application.settings.mapping#/admin/">Admin</a> &##183; </cfif><a href="#application.settings.mapping#/index.cfm?logout">Logout</a>
+	<div id="header"><cfif isDefined("session.loggedin") and session.loggedin is true><span id="menu2" style="float:right" class="s12"><a href="#application.settings.mapping#/index.cfm">Home</a> &##183; <cfif session.user.admin eq 1><a href="#application.settings.mapping#/admin/">Admin</a> &##183; </cfif><a href="#application.settings.mapping#/index.cfm?logout">Logout</a>
 	
 	<cfif not compareNoCase(right(cgi.script_name,11),'addTask.cfm')>
 	<div class="s18" style="text-align:right;padding:5px;">Add Task</div>

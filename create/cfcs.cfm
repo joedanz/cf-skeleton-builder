@@ -103,30 +103,7 @@
 
 	<cfloop query="columns">
 	
-		<cfswitch expression="#type_name#">
-			<cfcase value="bigint"><cfset result = "CF_SQL_BIGINT"></cfcase>
-			<cfcase value="bit"><cfset result = "CF_SQL_BIT"></cfcase>
-			<cfcase value="char"><cfset result = "CF_SQL_CHAR"></cfcase>
-			<cfcase value="datetime"><cfset result = "CF_SQL_DATE"></cfcase>
-			<cfcase value="decimal"><cfset result = "CF_SQL_DECIMAL"></cfcase>
-			<cfcase value="float"><cfset result = "CF_SQL_FLOAT"></cfcase>
-			<cfcase value="int"><cfset result = "CF_SQL_INTEGER"></cfcase>
-			<cfcase value="money"><cfset result = "CF_SQL_MONEY"></cfcase>
-			<cfcase value="nchar"><cfset result = "CF_SQL_CHAR"></cfcase>
-			<cfcase value="ntext"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
-			<cfcase value="numeric"><cfset result = "CF_SQL_NUMERIC"></cfcase>
-			<cfcase value="nvarchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
-			<cfcase value="real"><cfset result = "CF_SQL_REAL"></cfcase>
-			<cfcase value="smalldatetime"><cfset result = "CF_SQL_DATE"></cfcase>
-			<cfcase value="smallint"><cfset result = "CF_SQL_SMALLINT"></cfcase>
-			<cfcase value="smallmoney"><cfset result = "CF_SQL_MONEY4"></cfcase>
-			<cfcase value="text"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
-			<cfcase value="timestamp"><cfset result = "CF_SQL_TIMESTAMP"></cfcase>
-			<cfcase value="tinyint"><cfset result = "CF_SQL_TINYINT"></cfcase>
-			<cfcase value="uniqueidentifier"><cfset result = "CF_SQL_IDSTAMP"></cfcase>
-			<cfcase value="varchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
-			<cfdefaultcase><cfset result = "UNKNOWN"></cfdefaultcase>
-		</cfswitch>		
+		<cfset result = getCFSQLType(type_name)>	
 		
 		<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="#column_size#">'>
 		<cfif currentRow neq recordCount>
@@ -169,30 +146,7 @@
 
 	<cfloop query="non_primary_keys">
 	
-		<cfswitch expression="#type_name#">
-			<cfcase value="bigint"><cfset result = "CF_SQL_BIGINT"></cfcase>
-			<cfcase value="bit"><cfset result = "CF_SQL_BIT"></cfcase>
-			<cfcase value="char"><cfset result = "CF_SQL_CHAR"></cfcase>
-			<cfcase value="datetime"><cfset result = "CF_SQL_DATE"></cfcase>
-			<cfcase value="decimal"><cfset result = "CF_SQL_DECIMAL"></cfcase>
-			<cfcase value="float"><cfset result = "CF_SQL_FLOAT"></cfcase>
-			<cfcase value="int"><cfset result = "CF_SQL_INTEGER"></cfcase>
-			<cfcase value="money"><cfset result = "CF_SQL_MONEY"></cfcase>
-			<cfcase value="nchar"><cfset result = "CF_SQL_CHAR"></cfcase>
-			<cfcase value="ntext"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
-			<cfcase value="numeric"><cfset result = "CF_SQL_NUMERIC"></cfcase>
-			<cfcase value="nvarchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
-			<cfcase value="real"><cfset result = "CF_SQL_REAL"></cfcase>
-			<cfcase value="smalldatetime"><cfset result = "CF_SQL_DATE"></cfcase>
-			<cfcase value="smallint"><cfset result = "CF_SQL_SMALLINT"></cfcase>
-			<cfcase value="smallmoney"><cfset result = "CF_SQL_MONEY4"></cfcase>
-			<cfcase value="text"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
-			<cfcase value="timestamp"><cfset result = "CF_SQL_TIMESTAMP"></cfcase>
-			<cfcase value="tinyint"><cfset result = "CF_SQL_TINYINT"></cfcase>
-			<cfcase value="uniqueidentifier"><cfset result = "CF_SQL_IDSTAMP"></cfcase>
-			<cfcase value="varchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
-			<cfdefaultcase><cfset result = "UNKNOWN"></cfdefaultcase>
-		</cfswitch>	
+		<cfset result = getCFSQLType(type_name)>
 
 		<cfset thisCFC = thisCFC & '#column_name# = <cfqueryparam cfsqltype="#result#" value="##ARGUMENTS.#column_name###" maxlength="#column_size#" />'>
 	
@@ -206,30 +160,7 @@
 			WHERE 0=0'>
 
 	<cfloop query="primary_keys">
-		<cfswitch expression="#type_name#">
-			<cfcase value="bigint"><cfset result = "CF_SQL_BIGINT"></cfcase>
-			<cfcase value="bit"><cfset result = "CF_SQL_BIT"></cfcase>
-			<cfcase value="char"><cfset result = "CF_SQL_CHAR"></cfcase>
-			<cfcase value="datetime"><cfset result = "CF_SQL_DATE"></cfcase>
-			<cfcase value="decimal"><cfset result = "CF_SQL_DECIMAL"></cfcase>
-			<cfcase value="float"><cfset result = "CF_SQL_FLOAT"></cfcase>
-			<cfcase value="int"><cfset result = "CF_SQL_INTEGER"></cfcase>
-			<cfcase value="money"><cfset result = "CF_SQL_MONEY"></cfcase>
-			<cfcase value="nchar"><cfset result = "CF_SQL_CHAR"></cfcase>
-			<cfcase value="ntext"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
-			<cfcase value="numeric"><cfset result = "CF_SQL_NUMERIC"></cfcase>
-			<cfcase value="nvarchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
-			<cfcase value="real"><cfset result = "CF_SQL_REAL"></cfcase>
-			<cfcase value="smalldatetime"><cfset result = "CF_SQL_DATE"></cfcase>
-			<cfcase value="smallint"><cfset result = "CF_SQL_SMALLINT"></cfcase>
-			<cfcase value="smallmoney"><cfset result = "CF_SQL_MONEY4"></cfcase>
-			<cfcase value="text"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
-			<cfcase value="timestamp"><cfset result = "CF_SQL_TIMESTAMP"></cfcase>
-			<cfcase value="tinyint"><cfset result = "CF_SQL_TINYINT"></cfcase>
-			<cfcase value="uniqueidentifier"><cfset result = "CF_SQL_IDSTAMP"></cfcase>
-			<cfcase value="varchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
-			<cfdefaultcase><cfset result = "UNKNOWN"></cfdefaultcase>
-		</cfswitch>			
+		<cfset result = getCFSQLType(type_name)>
 		
 		<cfset thisCFC = thisCFC & '
 				AND #column_name# = <cfqueryparam cfsqltype="#result#" value="##arguments.#column_name###">'>
@@ -260,30 +191,7 @@
 
 	<cfloop query="primary_keys">
 	
-		<cfswitch expression="#type_name#">
-			<cfcase value="bigint"><cfset result = "CF_SQL_BIGINT"></cfcase>
-			<cfcase value="bit"><cfset result = "CF_SQL_BIT"></cfcase>
-			<cfcase value="char"><cfset result = "CF_SQL_CHAR"></cfcase>
-			<cfcase value="datetime"><cfset result = "CF_SQL_DATE"></cfcase>
-			<cfcase value="decimal"><cfset result = "CF_SQL_DECIMAL"></cfcase>
-			<cfcase value="float"><cfset result = "CF_SQL_FLOAT"></cfcase>
-			<cfcase value="int"><cfset result = "CF_SQL_INTEGER"></cfcase>
-			<cfcase value="money"><cfset result = "CF_SQL_MONEY"></cfcase>
-			<cfcase value="nchar"><cfset result = "CF_SQL_CHAR"></cfcase>
-			<cfcase value="ntext"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
-			<cfcase value="numeric"><cfset result = "CF_SQL_NUMERIC"></cfcase>
-			<cfcase value="nvarchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
-			<cfcase value="real"><cfset result = "CF_SQL_REAL"></cfcase>
-			<cfcase value="smalldatetime"><cfset result = "CF_SQL_DATE"></cfcase>
-			<cfcase value="smallint"><cfset result = "CF_SQL_SMALLINT"></cfcase>
-			<cfcase value="smallmoney"><cfset result = "CF_SQL_MONEY4"></cfcase>
-			<cfcase value="text"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
-			<cfcase value="timestamp"><cfset result = "CF_SQL_TIMESTAMP"></cfcase>
-			<cfcase value="tinyint"><cfset result = "CF_SQL_TINYINT"></cfcase>
-			<cfcase value="uniqueidentifier"><cfset result = "CF_SQL_IDSTAMP"></cfcase>
-			<cfcase value="varchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
-			<cfdefaultcase><cfset result = "UNKNOWN"></cfdefaultcase>
-		</cfswitch>		
+		<cfset result = getCFSQLType(type_name)>		
 		
 		<cfset thisCFC = thisCFC & '
 				AND #column_name# = <cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="#column_size#">'>
@@ -300,3 +208,33 @@
 	<cffile action="write" file="#ExpandPath('./tmp/cfcs/')##i#.cfc" OUTPUT="#thisCFC#">
 
 </cfloop>
+
+<cffunction name="getCFSQLType" returntype="string">
+	<cfargument name="type_name" type="string" required="true">
+	<cfset var result = "">
+	<cfswitch expression="#arguments.type_name#">
+		<cfcase value="bigint"><cfset result = "CF_SQL_BIGINT"></cfcase>
+		<cfcase value="bit"><cfset result = "CF_SQL_BIT"></cfcase>
+		<cfcase value="char"><cfset result = "CF_SQL_CHAR"></cfcase>
+		<cfcase value="datetime"><cfset result = "CF_SQL_DATE"></cfcase>
+		<cfcase value="decimal"><cfset result = "CF_SQL_DECIMAL"></cfcase>
+		<cfcase value="float"><cfset result = "CF_SQL_FLOAT"></cfcase>
+		<cfcase value="int"><cfset result = "CF_SQL_INTEGER"></cfcase>
+		<cfcase value="money"><cfset result = "CF_SQL_MONEY"></cfcase>
+		<cfcase value="nchar"><cfset result = "CF_SQL_CHAR"></cfcase>
+		<cfcase value="ntext"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
+		<cfcase value="numeric"><cfset result = "CF_SQL_NUMERIC"></cfcase>
+		<cfcase value="nvarchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
+		<cfcase value="real"><cfset result = "CF_SQL_REAL"></cfcase>
+		<cfcase value="smalldatetime"><cfset result = "CF_SQL_DATE"></cfcase>
+		<cfcase value="smallint"><cfset result = "CF_SQL_SMALLINT"></cfcase>
+		<cfcase value="smallmoney"><cfset result = "CF_SQL_MONEY4"></cfcase>
+		<cfcase value="text"><cfset result = "CF_SQL_LONGVARCHAR"></cfcase>
+		<cfcase value="timestamp"><cfset result = "CF_SQL_TIMESTAMP"></cfcase>
+		<cfcase value="tinyint"><cfset result = "CF_SQL_TINYINT"></cfcase>
+		<cfcase value="uniqueidentifier"><cfset result = "CF_SQL_IDSTAMP"></cfcase>
+		<cfcase value="varchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
+		<cfdefaultcase><cfset result = "UNKNOWN"></cfdefaultcase>
+	</cfswitch>		
+	<cfreturn result />
+</cffunction>

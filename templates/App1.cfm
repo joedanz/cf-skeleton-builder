@@ -1,4 +1,5 @@
 
+<cfset applicationName = right(REReplace(getDirectoryFromPath(getCurrentTemplatePath()),'[^A-Za-z0-9]','','all'),64)>
 <cfapplication name="#applicationName#" sessionManagement="true" loginstorage="session">
 
 <cfif not isDefined("application.init") or isDefined("url.reinit")>

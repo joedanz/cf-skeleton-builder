@@ -3,18 +3,18 @@
 
 <!--- set doctype line --->
 <cfswitch expression="#form.doctype#">
-	<cfcase value="html4tr"><cfset doctype='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'>
+	<cfcase value="html4tr"><cfset doctype='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">#chr(10)#<html>#chr(10)#'>
 	</cfcase>
 	<cfcase value="html4st"><cfset doctype='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">'>
+"http://www.w3.org/TR/html4/strict.dtd">#chr(10)#<html>#chr(10)#'>
 	</cfcase>
-	<cfcase value="xhtml1tr"><cfset doctype='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'>
+	<cfcase value="xhtml1tr"><cfset doctype='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">#chr(10)#<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">#chr(10)#'>
 	</cfcase>
 	<cfcase value="xhtml1st"><cfset doctype='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'>
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">#chr(10)#<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">#chr(10)#'>
 	</cfcase>
 	<cfcase value="xhtml11dtd"><cfset doctype='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'>
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">#chr(10)#<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">#chr(10)#'>
 	</cfcase>
 </cfswitch>
 
@@ -22,7 +22,8 @@
 <cfset scripts = "">
 <cfif isDefined("form.jquery")>
 	<cfif form.javascripts is 'linked'>
-		
+		<cfset scripts = scripts & '<script type="text/javascript" src="##request.jqueryURL##"></script>
+'>
 	<cfelse>
 		<cfset scripts = scripts & '<script type="text/javascript" src="##application.settings.mapping##/js/jquery.js"></script>
 '>
@@ -113,15 +114,9 @@
 <cffile action="write" file="#ExpandPath('./tmp/templates/')#main_header.cfm" output="#head1##doctype##head2##scripts##head3#">
 
 <!--- get template css --->
-<cfswitch expression="#form.skin#">
-
-	<cfcase value="default">
-		<cffile action="read" file="#ExpandPath('./skins/default/')#top.cfm" variable="top">
-		<cffile action="append" file="#ExpandPath('./tmp/templates/')#main_header.cfm" output="#top##head4#">
-		<cffile action="read" file="#ExpandPath('./skins/default/')#bottom.cfm" variable="bottom">
-	</cfcase>
-	
-</cfswitch>
+<cffile action="read" file="#ExpandPath('./skins/' & form.template & '/')#top.cfm" variable="top">
+<cffile action="append" file="#ExpandPath('./tmp/templates/')#main_header.cfm" output="#top##head4#">
+<cffile action="read" file="#ExpandPath('./skins/' & form.template & '/')#bottom.cfm" variable="bottom">
 
 <!--- write out footer --->
 <cffile action="write" file="#ExpandPath('./tmp/templates/')#main_footer.cfm" output="#foot1##bottom##foot2#">

@@ -1,12 +1,10 @@
-<cfapplication name="Skeleton_Site_Creator" sessionmanagement="true" clientmanagement="false" />
+<cfapplication name="Skeleton_Site_Creator2" sessionmanagement="true" clientmanagement="false" />
+
+<cfsetting showdebugoutput="true">
 
 <cfif isDefined("url.logout")>
 	<cflogout />
 </cfif>
-
-<!---<cfset request.CFCpath = "skeleton.cfcs.">--->
-
-<cfset form.skin = "default" />
 
 <cfscript>
 	request.jqueryURL 		 = "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js";

@@ -1,9 +1,7 @@
 <!--- create Application.cfm --->
 <cffile action="read" file="#ExpandPath('./templates/')#App1.cfm" variable="app1cfm">
 <cffile action="read" file="#ExpandPath('./templates/')#App2.cfm" variable="app2cfm">
-<cffile action="write" file="#ExpandPath('./tmp/')#Application.cfm" output='<cfsetting enablecfoutputonly="true" showdebugoutput="true">
-
-<cfset applicationName = "#form.appName#">#app1cfm#'>
+<cffile action="write" file="#ExpandPath('./tmp/')#Application.cfm" output='<cfsetting enablecfoutputonly="true" showdebugoutput="true">#app1cfm#'>
 <cfloop list="#form.cfcs#" index="i">
 	<cffile action="append" file="#ExpandPath('./tmp/')#Application.cfm" output='	<cfset application.#i# = createObject("component","cfcs.#i#").init(application.settings.dsn)>'>
 </cfloop>

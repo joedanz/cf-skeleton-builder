@@ -1,16 +1,17 @@
-body { background-color:#666; }
+body { background-color:#666; font-family:Arial,Helv; }
 a { text-decoration:none; }
 label { font-weight:bold; }
 th { font-weight:bold; text-align:center; }
 th,td { padding:3px; }
 #wrapper { width:770px;	margin:20px auto; border:5px solid #333; background-color:#fff; }
 #header { padding:10px;	background: #000 url(../images/header-bg.png) repeat-x top; }
-#header h1 { font-size:3em; color:#3cf; font-weight:bold; }
-#wrapper #header ul#navbar { color:#fff; }
-#wrapper #header ul#navbar li { display:inline; font-weight:bold; }
-#wrapper #header ul#navbar li a { color:#fc0; padding:0px 2px; }
-#wrapper #header ul#navbar li a:link,#wrapper #header ul#navbar li a:visited {  }
-#wrapper #header ul#navbar li a:hover { background-color:#fc0; color:#000; }
+#header a:link, #header a:visited { color:#fc0; font-weight:bold; }
+#header h1 { font-size:3em; color:#3cf; padding-left:20px; font-weight:bold; }
+#wrapper ul#navbar { color:#fff; background-color:#555; padding:5px; }
+#wrapper ul#navbar li { display:inline; font-weight:bold; }
+#wrapper ul#navbar li a { color:#fc0; padding:5px 10px; }
+#wrapper ul#navbar li a:link,#wrapper #header ul#navbar li a:visited {  }
+#wrapper ul#navbar li a:hover, #wrapper ul#navbar li a.active { background-color:#fc0; color:#000; }
 #content { background: #fff url(../images/body-bg.png) repeat-x top; padding:15px; }
 #content h2 { font-size:1.5em; margin-bottom:10px; }
 #footer { background: #ccc url(../images/footer-bg.png) repeat-x bottom; padding:6px; }
