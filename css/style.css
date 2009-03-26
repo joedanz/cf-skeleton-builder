@@ -1,0 +1,48 @@
+body { 
+	margin:10px; 
+	background-color:#172841; 
+}
+
+#container { 
+	background-color:#fcfff4; 
+	padding:8px 8px 8px 8px; 
+	width:670px; 
+	margin:auto; 
+}
+
+#header { 
+	background-color:#3e6171; 
+	color:#fff; 
+	padding:5px 10px; 
+	text-align:center; 
+	margin-bottom:8px;
+	font-size:3em; 
+	font-weight:bold;
+}
+
+.row { 
+	background-color:#ccdbcd; 
+	padding:5px 10px; 
+	margin-bottom:8px; 
+}
+
+.row label.step { font-size:1.6em; }
+.row ul { margin:10px 0 0 25px; }
+.row ul li { font-size:1.1em; margin-bottom:1px; }
+.row-last { margin-bottom:0; }
+div.note { margin-top:8px; }
+
+input.submit { 
+	float:right; 
+	width:200px; 
+	height:35px; 
+	font-size:1.4em; 
+	font-weight:bold; 
+	font-variant:small-caps; 
+}
+
+ul li.wrap { 
+	float:left; 
+	width:200px; 
+}
+
