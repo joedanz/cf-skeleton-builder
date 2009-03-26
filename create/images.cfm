@@ -8,6 +8,9 @@
 <!--- get images list for template --->
 <cfdirectory action="list" directory="#ExpandPath('./skins/' & form.template & '/images/')#" name="images" />
 
+<!--- copy alert image --->
+<cffile action="copy" source="#ExpandPath('./images/')#alert.gif" destination="#ExpandPath('./tmp/images/')#" />
+
 <!--- copy images for template --->
 <cfloop query="images">
 	<cfif compare(name,'.svn')>

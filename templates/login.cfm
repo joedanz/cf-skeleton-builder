@@ -7,7 +7,7 @@
 <div id="login">
 	
 <cfif isDefined("error")>
-<div id="error"><img src="/stdimages/alert.gif" height="16" width="16" border="0" alt="Alert!" align="absmiddle"> Error! #error#</div>
+<div id="error"><img src="./images/alert.gif" height="16" width="16" border="0" alt="Alert!" align="absmiddle"> Error! #error#</div>
 </cfif>	
 	
 <form action="#cgi.script_name#?#cgi.query_string#" method="post" name="loginform">
