@@ -74,8 +74,7 @@
 	</cfif>
 		
 	<!--- create zip file --->
-<!---	<cfinclude template="./create/zip.cfm" />
---->	
+	<cfinclude template="./create/zip.cfm" />	
 </cfif>
 
 <cfoutput>
