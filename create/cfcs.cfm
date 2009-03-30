@@ -105,7 +105,14 @@
 	
 		<cfset result = getCFSQLType(type_name)>	
 		
-		<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="#column_size#">'>
+		<cfif not compareNoCase(result,'CF_SQL_BIT')>
+			<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="1" />'>	
+		<cfelseif compareNoCase(result,'CF_SQL_DATE')>
+			<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="#column_size#" />'>	
+		<cfelse>
+			<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" />'>
+		</cfif>
+		
 		<cfif currentRow neq recordCount>
 			<cfset thisCFC = thisCFC & ', '>
 		</cfif>
@@ -148,8 +155,14 @@
 	
 		<cfset result = getCFSQLType(type_name)>
 
-		<cfset thisCFC = thisCFC & '#column_name# = <cfqueryparam cfsqltype="#result#" value="##ARGUMENTS.#column_name###" maxlength="#column_size#" />'>
-	
+		<cfif not compareNoCase(result,'CF_SQL_BIT')>
+			<cfset thisCFC = thisCFC & '#column_name# = <cfqueryparam cfsqltype="#result#" value="##ARGUMENTS.#column_name###" maxlength="1" />'>
+		<cfelseif compareNoCase(result,'CF_SQL_DATE')>
+			<cfset thisCFC = thisCFC & '#column_name# = <cfqueryparam cfsqltype="#result#" value="##ARGUMENTS.#column_name###" maxlength="#column_size#" />'>
+		<cfelse>
+			<cfset thisCFC = thisCFC & '#column_name# = <cfqueryparam cfsqltype="#result#" value="##ARGUMENTS.#column_name###" />'>
+		</cfif>
+		
 		<cfif currentRow neq recordCount>
 			<cfset thisCFC = thisCFC & ', 
 				'>
