@@ -10,7 +10,7 @@ $(document).ready(function(){
 
 function showTables() {
 	if ($('#dsource').val() == '') {
-		$('#step8').hide();	
-	} else $('#step8').show();
+		$('#step9').hide();
+	} else $('#step9').show();
 }
 

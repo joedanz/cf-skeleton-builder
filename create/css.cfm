@@ -8,14 +8,10 @@
 <cfset mastercss = "" />
 
 <!--- include html reset? --->
-<cfif isDefined("form.yuireset")>
+<cfif isDefined("form.reset")>
 	<cffile action="copy" source="#ExpandPath('./templates/css/')#reset-min.css" destination="#ExpandPath('./tmp/css/')#" />
 	<cfset mastercss = mastercss & '@import url("reset-min.css");
 ' />
-</cfif>
-
-<!--- include font reset? --->
-<cfif isDefined("form.yuifonts")>
 	<cffile action="copy" source="#ExpandPath('./templates/css/')#fonts-min.css" destination="#ExpandPath('./tmp/css/')#" />
 	<cfset mastercss = mastercss & '@import url("fonts-min.css");
 ' />

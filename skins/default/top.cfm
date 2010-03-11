@@ -10,6 +10,7 @@
 	<cfif isDefined("session.loggedin") and session.loggedin is true>
 	<ul id="navbar">
 		<li><a href="#application.settings.mapping#/index.cfm" class="selected">Home</a></li>
+		<li><a href="#application.settings.mapping#/crud/">CRUD</a></li>
 		<li><a href="#application.settings.mapping#/index.cfm?logout">Logout</a></li>
 	</ul>
 	</cfif>

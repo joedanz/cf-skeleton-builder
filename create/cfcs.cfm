@@ -3,28 +3,34 @@
 
 <!--- create any selected cfcs --->
 <cfloop list="#form.cfcs#" index="i">
-	
+
 	<!--- query db for columns --->
 	<cfdbinfo datasource="#form.dsource#" table="#i#" type="columns" name="columns">
 
 	<!--- separate out keys from non-keys --->
 	<cfquery name="primary_keys" dbtype="query">
 		select * from columns where IS_PRIMARYKEY = 'YES'
-	</cfquery>	
+	</cfquery>
 	<cfquery name="non_primary_keys" dbtype="query">
 		select * from columns where IS_PRIMARYKEY = 'NO'
-	</cfquery>		
-	
+	</cfquery>
+
 	<!--- start CFC & init method --->
 	<cfset thisCFC = '<cfcomponent displayName="#i#" hint="Manages CRUD operations for the #i# table.">
 
 	<cfset variables.dsn = "">
-	
+	<cfset variables.tablePrefix = "">
+	<cfset variables.dbUsername = "">
+	<cfset variables.dbPassword = "">
+
 	<cffunction name="init" access="public" returntype="#i#" output="false"
 				html="Returns an instance of the CFC initialized with the correct DSN.">
-		<cfargument name="dsn" type="string" required="true" hint="DSN used for all operations in the CFC.">
+		<cfargument name="settings" type="struct" required="true" hint="Settings used for all operations in the CFC.">
 
-		<cfset variables.dsn = arguments.dsn>
+		<cfset variables.dsn = arguments.settings.dsn>
+		<cfset variables.tablePrefix = arguments.settings.tablePrefix>
+		<cfset variables.dbUsername = arguments.settings.dbUsername>
+		<cfset variables.dbPassword = arguments.settings.dbPassword>
 
 		<cfreturn this>
 	</cffunction>
@@ -36,36 +42,55 @@
 				hint="Returns #i# records.">'>
 
 	<cfloop query="primary_keys">
-		<cfif listFindNoCase('bigint,bit,decimal,float,int,money,smallint,smallmoney,tinyint',replaceNoCase(type_name,' identity',''))>
-			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="numeric" required="false" default="0" />'>
-		<cfelse>
-			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="string" required="false" default="" />'>
-		</cfif>	
+		<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="string" required="false" default="" />'>
+	</cfloop>
+
+	<cfloop query="non_primary_keys">
+		<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="string" required="false" default="" />'>
 	</cfloop>
 
 	<cfset thisCFC = thisCFC & '
 		<cfset var qRecords = "">
-		
-		<cfquery name="qRecords" datasource="##variables.dsn##">
+
+		<cfquery name="qRecords" datasource="##variables.dsn##" username="##variables.dbUsername##" password="##variables.dbPassword##">
 			SELECT '>
 
 	<cfloop query="columns">
-		<cfset thisCFC = thisCFC & column_name>
+		<cfset thisCFC = thisCFC & left(i,1) & "." & column_name>
 		<cfif currentRow neq recordCount>
 			<cfset thisCFC = thisCFC & ', '>
 		</cfif>
 	</cfloop>
-	
-	<cfset thisCFC = thisCFC & '
-			FROM #i#'>
 
 	<cfset thisCFC = thisCFC & '
-		</cfquery>		
-		
+			FROM #i# #left(i,1)#
+			WHERE 0=0'>
+
+	<cfloop query="primary_keys">
+		<cfset result = getCFSQLType(type_name)>
+
+		<cfset thisCFC = thisCFC & '
+			<cfif compare(arguments.#column_name#,'')>
+				AND #left(i,1)#.#column_name# = <cfqueryparam cfsqltype="#result#" value="##arguments.#column_name###">
+			</cfif>'>
+	</cfloop>
+
+	<cfloop query="non_primary_keys">
+		<cfset result = getCFSQLType(type_name)>
+
+		<cfset thisCFC = thisCFC & '
+			<cfif compare(arguments.#column_name#,'')>
+				AND #left(i,1)#.#column_name# = <cfqueryparam cfsqltype="#result#" value="##arguments.#column_name###">
+			</cfif>'>
+	</cfloop>
+
+	<cfset thisCFC = thisCFC & '
+		</cfquery>
+
 		<cfreturn qRecords>
-		
+
 	</cffunction>
-	'>	
+	'>
 
 
 	<!--- insert Method --->
@@ -77,18 +102,18 @@
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="numeric" required="false" default="0" />'>
 		<cfelse>
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="string" required="false" default="" />'>
-		</cfif>	
+		</cfif>
 	</cfloop>
-	
+
 	<cfloop query="non_primary_keys">
 		<cfif listFindNoCase('bigint,bit,decimal,float,int,money,smallint,smallmoney,tinyint',replaceNoCase(type_name,' identity',''))>
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="numeric" required="false" default="0" />'>
 		<cfelse>
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="string" required="false" default="" />'>
-		</cfif>	
-	</cfloop>	
+		</cfif>
+	</cfloop>
 
-	<cfset thisCFC = thisCFC & '#chr(10)##chr(10)#		<cfquery datasource="##variables.dsn##">
+	<cfset thisCFC = thisCFC & '#chr(10)##chr(10)#		<cfquery datasource="##variables.dsn##" username="##variables.dbUsername##" password="##variables.dbPassword##">
 			INSERT INTO #i# ('>
 
 	<cfloop query="columns">
@@ -99,30 +124,30 @@
 	</cfloop>
 
 	<cfset thisCFC = thisCFC & ')
-				VALUES('>
+			VALUES('>
 
 	<cfloop query="columns">
-	
-		<cfset result = getCFSQLType(type_name)>	
-		
+
+		<cfset result = getCFSQLType(type_name)>
+
 		<cfif not compareNoCase(result,'CF_SQL_BIT')>
-			<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="1" />'>	
+			<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="1" />'>
 		<cfelseif compareNoCase(result,'CF_SQL_DATE')>
-			<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="#column_size#" />'>	
+			<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="#column_size#" />'>
 		<cfelse>
 			<cfset thisCFC = thisCFC & '#chr(10)#				<cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" />'>
 		</cfif>
-		
+
 		<cfif currentRow neq recordCount>
 			<cfset thisCFC = thisCFC & ', '>
 		</cfif>
-						
+
 	</cfloop>
-				
-	<cfset thisCFC = thisCFC & '		
+
+	<cfset thisCFC = thisCFC & '
 				)
 		</cfquery>
-			
+
 	</cffunction>
 	'>
 
@@ -136,23 +161,24 @@
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="numeric" required="false" default="0" />'>
 		<cfelse>
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="string" required="false" default="" />'>
-		</cfif>	
+		</cfif>
 	</cfloop>
-	
+
 	<cfloop query="non_primary_keys">
 		<cfif listFindNoCase('bigint,bit,decimal,float,int,money,smallint,smallmoney,tinyint',replaceNoCase(type_name,' identity',''))>
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="numeric" required="false" default="0" />'>
 		<cfelse>
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="string" required="false" default="" />'>
-		</cfif>	
-	</cfloop>	
+		</cfif>
+	</cfloop>
 
-	<cfset thisCFC = thisCFC & '#chr(10)##chr(10)#		<cfquery datasource="##variables.dsn##">
-			UPDATE #i# SET
+	<cfset thisCFC = thisCFC & '#chr(10)##chr(10)#		<cfquery datasource="##variables.dsn##" username="##variables.dbUsername##" password="##variables.dbPassword##">
+			UPDATE #i#
+			SET
 				'>
 
 	<cfloop query="non_primary_keys">
-	
+
 		<cfset result = getCFSQLType(type_name)>
 
 		<cfif not compareNoCase(result,'CF_SQL_BIT')>
@@ -162,9 +188,9 @@
 		<cfelse>
 			<cfset thisCFC = thisCFC & '#column_name# = <cfqueryparam cfsqltype="#result#" value="##ARGUMENTS.#column_name###" />'>
 		</cfif>
-		
+
 		<cfif currentRow neq recordCount>
-			<cfset thisCFC = thisCFC & ', 
+			<cfset thisCFC = thisCFC & ',
 				'>
 		</cfif>
 	</cfloop>
@@ -174,14 +200,14 @@
 
 	<cfloop query="primary_keys">
 		<cfset result = getCFSQLType(type_name)>
-		
+
 		<cfset thisCFC = thisCFC & '
 				AND #column_name# = <cfqueryparam cfsqltype="#result#" value="##arguments.#column_name###">'>
 	</cfloop>
-	
-	<cfset thisCFC = thisCFC & '			
+
+	<cfset thisCFC = thisCFC & '
 		</cfquery>
-				
+
 	</cffunction>
 	'>
 
@@ -194,25 +220,26 @@
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="numeric" required="false" default="0" />'>
 		<cfelse>
 			<cfset thisCFC = thisCFC & '#chr(10)#		<cfargument name="#column_name#" type="string" required="false" default="" />'>
-		</cfif>	
+		</cfif>
 	</cfloop>
 
 	<cfset thisCFC = thisCFC & '
-		
-		<cfquery datasource="##variables.dsn##">
-			DELETE FROM #i# WHERE 0=0'>
+
+		<cfquery datasource="##variables.dsn##" username="##variables.dbUsername##" password="##variables.dbPassword##">
+			DELETE FROM #i#
+			WHERE 0=0'>
 
 	<cfloop query="primary_keys">
-	
-		<cfset result = getCFSQLType(type_name)>		
-		
+
+		<cfset result = getCFSQLType(type_name)>
+
 		<cfset thisCFC = thisCFC & '
 				AND #column_name# = <cfqueryparam cfsqltype="#result#" VALUE="##arguments.#column_name###" maxlength="#column_size#">'>
 	</cfloop>
 
 	<cfset thisCFC = thisCFC & '
 		</cfquery>
-		
+
 	</cffunction>'>
 
 	<!--- end of CFC --->
@@ -248,6 +275,6 @@
 		<cfcase value="uniqueidentifier"><cfset result = "CF_SQL_IDSTAMP"></cfcase>
 		<cfcase value="varchar"><cfset result = "CF_SQL_VARCHAR"></cfcase>
 		<cfdefaultcase><cfset result = "UNKNOWN"></cfdefaultcase>
-	</cfswitch>		
+	</cfswitch>
 	<cfreturn result />
 </cffunction>

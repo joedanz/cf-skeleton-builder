@@ -1,9 +1,9 @@
 <cfsetting enablecfoutputonly="true">
 
 <cfif isDefined("create")>
-	
+
 	<cfparam name="form.CFCs" default="">
-	
+
 	<!--- delete old working directory --->
 	<cftry>
 		<cfdirectory action="delete" directory="#ExpandPath('./tmp/')#" recurse="true">
@@ -12,7 +12,7 @@
 
 	<!--- recreate working directory --->
 	<cftry>
-		<cfdirectory action="create" directory="#ExpandPath('./tmp/')#">	
+		<cfdirectory action="create" directory="#ExpandPath('./tmp/')#">
 		<cfcatch></cfcatch>
 	</cftry>
 
@@ -25,8 +25,8 @@
 	<cfinclude template="./create/images.cfm" />
 	<cfinclude template="./create/tags.cfm" />
 	<cfinclude template="./create/templates.cfm" />
-	
-	<!--- scripts to include in js dir --->	
+
+	<!--- scripts to include in js dir --->
 	<cfif isDefined("form.jquery")>
 		<cfset jsscript = "jquery">
 		<cfset jsscriptURL = request.jqueryURL>
@@ -36,12 +36,12 @@
 		<cfset jsscript = "jqueryui">
 		<cfset jsscriptURL = request.jqueryUIURL>
 		<cfinclude template="./create/jsScript.cfm" />
-	</cfif>	
+	</cfif>
 	<cfif isDefined("form.jqueryCorner")>
 		<cfset jsscript = "jquery.corner">
 		<cfset jsscriptURL = request.jqueryCornerURL>
 		<cfinclude template="./create/jsScript.cfm" />
-	</cfif>	
+	</cfif>
 	<cfif isDefined("form.prototype")>
 		<cfset jsscript = "prototype">
 		<cfset jsscriptURL = request.prototypeURL>
@@ -72,9 +72,19 @@
 		<cfset jsscriptURL = request.yuiURL>
 		<cfinclude template="./create/jsScript.cfm" />
 	</cfif>
-		
+	<cfif isDefined("form.extcore")>
+		<cfset jsscript = "extcore">
+		<cfset jsscriptURL = request.extCore>
+		<cfinclude template="./create/jsScript.cfm" />
+	</cfif>
+	<cfif isDefined("form.chromeframe")>
+		<cfset jsscript = "chromeframe">
+		<cfset jsscriptURL = request.chromeFrame>
+		<cfinclude template="./create/jsScript.cfm" />
+	</cfif>
+
 	<!--- create zip file --->
-	<cfinclude template="./create/zip.cfm" />	
+	<cfinclude template="./create/zip.cfm" />
 </cfif>
 
 <cfoutput>
@@ -95,27 +105,27 @@
 <div id="header">ColdFusion Skeleton Site Creator</div>
 
 <div class="row" id="step1">
-	<label for="title" class="step">Step 1: Enter a title for your app:</label> 
+	<label for="title" class="step">Step 1: Enter a title for your app:</label>
 	<input type="text" name="title" size="30" id="title" style="padding:2px;" />
 </div>
 
 <div class="row" id="step2">
-	<label for="mapping" class="step">Step 2: Enter the mapping path:</label> 
+	<label for="mapping" class="step">Step 2: Enter the mapping path:</label>
 	<input type="text" name="mapping" size="30" id="mapping" style="padding:2px;" />
 </div>
 
 <div class="row" id="step3">
 	<label for="doctype" class="step">Step 3: Which doctype would you like to use?</label>
 	<ul id="doctype">
-		<li class="wrap"><input type="radio" name="doctype" value="xhtml1tr" id="xhtml1tr" /> 
+		<li class="wrap"><input type="radio" name="doctype" value="xhtml1tr" id="xhtml1tr" />
 			<label for="xhtml1tr">XHTML 1.0 Transitional</label></li>
-		<li class="wrap"><input type="radio" name="doctype" value="xhtml1st" id="xhtml1st" /> 
+		<li class="wrap"><input type="radio" name="doctype" value="xhtml1st" id="xhtml1st" />
 			<label for="xhtml1st">XHTML 1.0 Strict</label></li>
-		<li><input type="radio" name="doctype" value="xhtml11dtd" id="xhtml11dtd" /> 
+		<li><input type="radio" name="doctype" value="xhtml11dtd" id="xhtml11dtd" />
 			<label for="xhtml11dtd">XHTML 1.1 DTD</label></li>
-		<li class="wrap"><input type="radio" name="doctype" value="html4tr" id="html4tr" checked="checked" /> 
+		<li class="wrap"><input type="radio" name="doctype" value="html4tr" id="html4tr" checked="checked" />
 			<label for="html4tr">HTML 4.01 Transitional</label></li>
-		<li><input type="radio" name="doctype" value="html4st" id="html4st" /> 
+		<li><input type="radio" name="doctype" value="html4st" id="html4st" />
 			<label for="html4st">HTML 4.01 Strict</label></li>
 	</ul>
 </div>
@@ -123,33 +133,36 @@
 <div class="row" id="step4">
 	<label for="scripts" class="step">Step 4: Select any libraries to include: </label>
 	<ul id="scripts">
-		<li class="wrap"><input type="checkbox" name="jquery" value="1" id="jquery" /> 
+		<li class="wrap"><input type="checkbox" name="jquery" value="1" id="jquery" />
 			<label for="jquery">jQuery</label></li>
-		<li class="wrap"><input type="checkbox" name="prototype" value="1" id="prototype" /> 
+		<li class="wrap"><input type="checkbox" name="prototype" value="1" id="prototype" />
 			<label for="prototype">Prototype</label></li>
-		<li><input type="checkbox" name="yuireset" value="1" id="yuireset" checked="checked" /> 
-			<label for="yuireset">YUI Reset</label></li>
-
-		<li class="wrap"><input type="checkbox" name="jqueryui" value="1" id="jqueryui" /> 
-			<label for="jqueryui">jQuery UI</label></li>
-		<li class="wrap"><input type="checkbox" name="prototype" value="1" id="prototype" /> 
+		<li><input type="checkbox" name="prototype" value="1" id="prototype" />
 			<label for="prototype">Script.aculo.us</label></li>
-		<li><input type="checkbox" name="yuifonts" value="1" id="yuifonts" checked="checked" /> 
-			<label for="yuifonts">YUI Fonts</label></li>
-			
-		<li class="wrap"><input type="checkbox" name="jqueryCorner" value="1" id="jqueryCorner" /> 
-			<label for="jqueryCorner">jQuery Corner Plugin</label></li>
-		<li class="wrap"><input type="checkbox" name="mootools" value="1" id="mootools" /> 
-			<label for="mootools">MooTools</label></li>
-		<li><input type="checkbox" name="yui" value="1" id="yui" checked="checked" /> 
-			<label for="yui">YUI</label></li>			
 
-		<li class="wrap"><input type="checkbox" name="dojo" value="1" id="dojo" checked="checked" /> 
+		<li class="wrap"><input type="checkbox" name="jqueryui" value="1" id="jqueryui" />
+			<label for="jqueryui">jQuery UI</label></li>
+		<li class="wrap"><input type="checkbox" name="prototype" value="1" id="prototype" />
+			<label for="prototype">Script.aculo.us</label></li>
+		<li><input type="checkbox" name="yui" value="1" id="yui" checked="checked" />
+			<label for="yui">YUI</label></li>
+
+		<li class="wrap"><input type="checkbox" name="jqueryCorner" value="1" id="jqueryCorner" />
+			<label for="jqueryCorner">jQuery Corner Plugin</label></li>
+		<li class="wrap"><input type="checkbox" name="mootools" value="1" id="mootools" />
+			<label for="mootools">MooTools</label></li>
+		<li><input type="checkbox" name="dojo" value="1" id="dojo" checked="checked" />
 			<label for="dojo">Dojo</label></li>
-		<li><input type="checkbox" name="swfobject" value="1" id="swfobject" /> 
+
+
+		<li class="wrap"><input type="checkbox" name="swfobject" value="1" id="swfobject" />
 			<label for="swfobject">SWFObject</label></li>
+		<li class="wrap"><input type="checkbox" name="extcore" value="1" id="extcore" />
+			<label for="extcore">Ext Core</label></li>
+		<li><input type="checkbox" name="chromeframe" value="1" id="chromeframe" />
+			<label for="chromeframe">Chrome Frame</label></li>
 	</ul>
-	<p><input type="radio" name="javascripts" value="linked" id="linked" /> <label for="linked">Linked</label> 
+	<p><input type="radio" name="javascripts" value="linked" id="linked" /> <label for="linked">Linked</label>
 		or <input type="radio" name="javascripts" value="downloaded" id="downloaded" checked="checked" /> <label for="downloaded">Downloaded</label>
 	</p>
 	<div class="note">A 'js' directory will be created if any scripts are selected for download</div>
@@ -169,8 +182,21 @@
 </div>
 
 <div class="row" id="step6">
-	<label for="ds" class="step">Step 6: Choose the datasource for your application:</label>
-	<cfselect name="dsource" id="dsource" style="padding:1px;" onchange="showTables();">
+	<label for="cfmcfc" class="step">Step 6: Which type of application file?</label>
+	<input type="radio" name="cfmcfc" value="cfc" id="cfc" checked="checked" />
+	<label for="cfc">Application.cfc</label> &nbsp;&nbsp;
+	<input type="radio" name="cfmcfc" value="cfm" id="cfm" />
+	<label for="cfm">Application.cfm</label>
+</div>
+
+<div class="row" id="step7">
+	<label for="cfmcfc" class="step">Step 7: Check here to include reset CSS:</label>
+	<input type="checkbox" name="reset" value="1" checked="checked" />
+</div>
+
+<div class="row" id="step8">
+	<label for="ds" class="step">Step 8: Choose the datasource for your application:</label>
+	<select name="dsource" id="dsource" style="padding:1px;" onchange="showTables();">
 		<option value="">None</option>
 		<cfif isDefined("session.adminpw")>
 			<cfset getDS = createObject("component","cfcs.AdminAPI").dsList(session.adminpw)>
@@ -178,11 +204,11 @@
 			<option value="#ds#">#ds#</option>
 			</cfloop>
 		</cfif>
-	</cfselect>
+	</select>
 </div>
 
-<div class="row" id="step7">
-	<label class="step">Step 7: Select tables and views to create CFCs &amp; CRUD pages for:</label>
+<div class="row" id="step9">
+	<label class="step">Step 9: Select tables and views to create CFCs &amp; CRUD pages for:</label>
 	<ul>
 		<cfdiv bind="cfc:cfcs.AdminAPI.getTables({dsource})" />
 	</ul>
@@ -204,7 +230,7 @@
 <cfif compareNoCase(GetAuthUser(),'admin')>
 	<cfoutput>
 	<cfwindow name="loginWindow" title="ColdFusion Administrator Login" center="true" closable="false" initShow="true" modal="true" height="150" width="250" resizable="false">
-		
+
 	<script type="text/javascript">
 	function doLogin() {
 		// Create the ajax proxy instance.
@@ -223,7 +249,7 @@
 	</script>
 
 	<cfform method="post" format="html" timeout="10000" name="loginForm">
-		<label for="username">Username:</label> 
+		<label for="username">Username:</label>
 		<cfinput type="text" name="j_username" id="username" value="Admin" required="true" message="Administrator username is required!" />
 		<label for="password">Password:</label>
 		<cfinput type="password" name="j_password" id="password" required="true" message="Administrator password is required!" />

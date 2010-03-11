@@ -1,6 +1,6 @@
 body { background-color:#666; font-family:Arial,Helv; }
 a { text-decoration:none; }
-label { font-weight:bold; }
+label,strong { font-weight:bold; }
 th { font-weight:bold; text-align:center; }
 th,td { padding:3px; }
 #wrapper { width:770px;	margin:20px auto; border:5px solid #333; background-color:#fff; }

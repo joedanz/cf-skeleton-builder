@@ -14,15 +14,51 @@
 	<!--- separate out keys from non-keys --->
 	<cfquery name="primary_keys" dbtype="query">
 		select * from columns where IS_PRIMARYKEY = 'YES'
-	</cfquery>	
+	</cfquery>
 	<cfquery name="non_primary_keys" dbtype="query">
 		select * from columns where IS_PRIMARYKEY = 'NO'
-	</cfquery>	
-	
+	</cfquery>
+
 	<cfset thisCRUD = '<cfsetting enablecfoutputonly="true">
 
-<cfif isDefined("url.del")>
-	<cfset application.#i#.delete(url.del)>
+<cfif StructKeyExists(url,"del")>
+	<cfset application.#i#.delete('>
+
+	<cfloop query="primary_keys">
+		<cfset thisCRUD = thisCRUD & "url.#column_name#">
+		<cfif currentRow neq recordCount><cfset thisCRUD = thisCRUD & ","></cfif>
+	</cfloop>
+
+	<cfset thisCRUD = thisCRUD & ')>
+<cfelseif StructKeyExists(form,"add")>
+	<cfset application.#i#.create('>
+
+	<cfloop query="primary_keys">
+		<cfset thisCRUD = thisCRUD & "form.#column_name#">
+		<cfif currentRow neq recordCount><cfset thisCRUD = thisCRUD & ","></cfif>
+	</cfloop>
+	<cfif primary_keys.recordCount and non_primary_keys.recordCount><cfset thisCRUD = thisCRUD & ","></cfif>
+	<cfloop query="non_primary_keys">
+		<cfset thisCRUD = thisCRUD & "form.#column_name#">
+		<cfif currentRow neq recordCount><cfset thisCRUD = thisCRUD & ","></cfif>
+	</cfloop>
+
+<cfset thisCRUD = thisCRUD & ')>
+	<cflocation url="##cgi.script_name##?added" addtoken="false">
+<cfelseif StructKeyExists(form,"upd")>
+	<cfset application.#i#.update('>
+
+	<cfloop query="primary_keys">
+		<cfset thisCRUD = thisCRUD & "form.#column_name#">
+		<cfif currentRow neq recordCount><cfset thisCRUD = thisCRUD & ","></cfif>
+	</cfloop>
+	<cfif primary_keys.recordCount and non_primary_keys.recordCount><cfset thisCRUD = thisCRUD & ","></cfif>
+	<cfloop query="non_primary_keys">
+		<cfset thisCRUD = thisCRUD & "form.#column_name#">
+		<cfif currentRow neq recordCount><cfset thisCRUD = thisCRUD & ","></cfif>
+	</cfloop>
+<cfset thisCRUD = thisCRUD & ')>
+	<cflocation url="##cgi.script_name##?updated" addtoken="false">
 </cfif>
 
 <!--- Loads header/footer --->
@@ -30,19 +66,76 @@
 
 <cfoutput>
 <style type="text/css">
+table { width:100%; }
 ul.subnav { float:right; font-size:1.1em; }
 ul.subnav li { display:inline; font-weight:bold; }
 label { float:left; width:200px; text-align:right; margin-right:10px; }
 </style>
 
 <ul class="subnav">
-	<li><a href="##cgi.script_name##?list">List</a></li> | 
-	<li><a href="##cgi.script_name##?new">New</a></li> | 
-	<li><a href="../index.cfm">Home</a></li>
+	<li><cfif not isDefined("url.new")>List<cfelse><a href="##cgi.script_name##?list">List</a></cfif></li> |
+	<li><cfif isDefined("url.new")>New<cfelse><a href="##cgi.script_name##?new">New</a></cfif></li>
 </ul>
 <h2>#i#</h2>
 
-<cfif isDefined("url.list")>
+<cfif StructKeyExists(url,"new")>
+
+	<form action="##cgi.script_name##" method="post">
+	'>
+
+	<cfloop query="primary_keys">
+		<cfset thisCRUD = thisCRUD & '#chr(10)#		<p>#chr(10)#			<label for="#column_name#">#column_name#:</label>#chr(10)#		'>
+		<cfif listFindNoCase('bigint,bit,decimal,float,int,money,smallint,smallmoney,tinyint',replaceNoCase(type_name,' identity',''))>
+			<cfset thisCRUD = thisCRUD & '	<input type="text" name="#column_name#" id="#column_name#" />#chr(10)#		</p>'>
+		<cfelse>
+			<cfset thisCRUD = thisCRUD & '	<input type="text" name="#column_name#" id="#column_name#" maxlength="#column_size#" value="##createUUID()##" />#chr(10)#		</p>#chr(10)#'>
+		</cfif>
+	</cfloop>
+	<cfloop query="non_primary_keys">
+		<cfset thisCRUD = thisCRUD & '#chr(10)#		<p>#chr(10)#			<label for="#column_name#">#column_name#:</label>#chr(10)#		'>
+		<cfif listFindNoCase('bigint,bit,decimal,float,int,money,smallint,smallmoney,tinyint',replaceNoCase(type_name,' identity',''))>
+			<cfset thisCRUD = thisCRUD & '	<input type="text" name="#column_name#" id="#column_name#" />#chr(10)#		</p>'>
+		<cfelse>
+			<cfset thisCRUD = thisCRUD & '	<input type="text" name="#column_name#" id="#column_name#" maxlength="#column_size#" />#chr(10)#		</p>#chr(10)#'>
+		</cfif>
+	</cfloop>
+
+	<cfset thisCRUD = thisCRUD & '#chr(10)#		<input type="submit" name="add" value="Add New Record" id="sub" />
+
+	</form>
+
+<cfelseif StructKeyExists(url,"edit")>
+
+	<cfset record = application.#i#.get('>
+
+	<cfloop query="primary_keys">
+		<cfset thisCRUD = thisCRUD & "url.#column_name#">
+		<cfif currentRow neq recordCount><cfset thisCRUD = thisCRUD & ","></cfif>
+	</cfloop>
+
+	<cfset thisCRUD = thisCRUD & ')>
+
+	<form action="##cgi.script_name##" method="post">
+	'>
+
+	<cfloop query="non_primary_keys">
+		<cfset thisCRUD = thisCRUD & '#chr(10)#		<p>#chr(10)#			<label for="#column_name#">#column_name#:</label>#chr(10)#		'>
+		<cfif listFindNoCase('bigint,bit,decimal,float,int,money,smallint,smallmoney,tinyint',replaceNoCase(type_name,' identity',''))>
+			<cfset thisCRUD = thisCRUD & '	<input type="text" name="#column_name#" id="#column_name#" value="##record.#column_name###" />#chr(10)#		</p>'>
+		<cfelse>
+			<cfset thisCRUD = thisCRUD & '	<input type="text" name="#column_name#" id="#column_name#" maxlength="#column_size#" value="##record.#column_name###" />#chr(10)#		</p>#chr(10)#'>
+		</cfif>
+	</cfloop>
+
+	<cfloop query="primary_keys">
+		<cfset thisCRUD = thisCRUD & '		<input type="hidden" name="#column_name#" value="##record.#column_name###" />'>
+	</cfloop>
+
+	<cfset thisCRUD = thisCRUD & '#chr(10)#		<input type="submit" name="upd" value="Update Record" id="sub" /> or <a href="####" onclick="history.back();">Cancel</a>
+
+	</form>
+
+<cfelse>
 
 	<cfset records = application.#i#.get()>
 	<table cellpadding="2" cellspacing="0" border="1">
@@ -58,13 +151,19 @@ label { float:left; width:200px; text-align:right; margin-right:10px; }
 
 	<cfset thisCRUD = thisCRUD & '#chr(10)#	<cfloop query="records">
 	<tr>
-		<td>##currentRow##</td><td>[<a href="">edit</a>] [<a href="##cgi.script_name##?del=1&'>
-		
+		<td>##currentRow##</td><td>[<a href="##cgi.script_name##?edit=1&'>
+
 		<cfloop query="primary_keys">
-			<cfset thisCRUD = thisCRUD & '#column_name#=###column_name###&'>
+			<cfset thisCRUD = thisCRUD & '&#column_name#=###column_name###'>
 		</cfloop>
 
-		<cfset thisCRUD = thisCRUD & 'list" onclick="return confirm(''Are you sure you wish to delete this record?'');">x</a>]</td>'>
+		<cfset thisCRUD = thisCRUD & '">edit</a>] [<a href="##cgi.script_name##?del=1'>
+
+		<cfloop query="primary_keys">
+			<cfset thisCRUD = thisCRUD & '&#column_name#=###column_name###'>
+		</cfloop>
+
+		<cfset thisCRUD = thisCRUD & '" onclick="return confirm(''Are you sure you wish to delete this record?'');">x</a>]</td>'>
 
 		<cfloop query="columns">
 			<cfset thisCRUD = thisCRUD & '#chr(10)#		<td>###Column_name###</td>'>
@@ -77,19 +176,6 @@ label { float:left; width:200px; text-align:right; margin-right:10px; }
 	</tr>
 
 	</table>
-
-<cfelseif isDefined("url.new")>'>
-
-	<cfloop query="columns">
-		<cfset thisCRUD = thisCRUD & '#chr(10)#	<p>#chr(10)#		<label for="#column_name#">#column_name#:</label>#chr(10)#		'>
-		<cfif listFindNoCase('bigint,bit,decimal,float,int,money,smallint,smallmoney,tinyint',replaceNoCase(type_name,' identity',''))>
-			<cfset thisCRUD = thisCRUD & '<input type="text" name="#column_name#" id="#column_name#" />#chr(10)#	</p>'>
-		<cfelse>
-			<cfset thisCRUD = thisCRUD & '<input type="text" name="#column_name#" id="#column_name#" maxlength="#column_size#" />#chr(10)#	</p>#chr(10)#'>
-		</cfif>
-	</cfloop>
-
-	<cfset thisCRUD = thisCRUD & '#chr(10)#	<input type="submit" value="Add New Record" id="sub" />
 </cfif>
 
 </cfoutput>
@@ -101,3 +187,23 @@ label { float:left; width:200px; text-align:right; margin-right:10px; }
 <cffile action="write" file="#ExpandPath('./tmp/crud/')##i#.cfm" output="#thisCRUD#">
 
 </cfloop>
+
+
+<!--- create default index file --->
+<cffile action="write" file="#ExpandPath('./tmp/crud/')#index.cfm" output='<cfsetting enablecfoutputonly="true">
+
+<!--- Loads header/footer --->
+<cfmodule template="##application.settings.mapping##/tags/layout.cfm" templatename="main" title="##application.settings.title## &raquo; Home">
+
+<cfoutput>
+<h2>Database CRUD Pages</h2>
+<ul style="list-style-type:square;margin-left:30px;">
+	<cfloop list="#form.cfcs#" index="t">
+		<li><a href="./##t##.cfm">##t##</a></li>
+	</cfloop>
+</ul>
+</cfoutput>
+
+</cfmodule>
+
+<cfsetting enablecfoutputonly="false">'>
