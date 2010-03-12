@@ -13,6 +13,15 @@ th,td { padding:3px; }
 #wrapper ul#navbar li a:link,#wrapper #header ul#navbar li a:visited {  }
 #wrapper ul#navbar li a:hover, #wrapper ul#navbar li a.active { background-color:#fc0; color:#000; }
 #content { background: #fff url(../images/body-bg.png) repeat-x top; padding:15px; }
-#content h2 { font-size:1.5em; margin-bottom:10px; }
+#content h2 { font-size:1.5em; margin-bottom:20px; }
 #footer { background: #ccc url(../images/footer-bg.png) repeat-x bottom; padding:6px; }
 #login { padding:15px; }
+
+/* for crud pages */
+table { width:100%; }
+ul.subnav { float:right; font-size:1.1em; }
+ul.subnav li { display:inline; font-weight:bold; }
+label { float:left; width:150px; text-align:right; margin-right:10px; padding:3px; }
+form p { margin-bottom:10px; }
+form p input { width:300px; padding:3px; }
+form p input#sub { width:150px; }

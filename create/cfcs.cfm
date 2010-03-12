@@ -70,7 +70,7 @@
 		<cfset result = getCFSQLType(type_name)>
 
 		<cfset thisCFC = thisCFC & '
-			<cfif compare(arguments.#column_name#,'')>
+			<cfif compare(arguments.#column_name#,"")>
 				AND #left(i,1)#.#column_name# = <cfqueryparam cfsqltype="#result#" value="##arguments.#column_name###">
 			</cfif>'>
 	</cfloop>
@@ -79,7 +79,7 @@
 		<cfset result = getCFSQLType(type_name)>
 
 		<cfset thisCFC = thisCFC & '
-			<cfif compare(arguments.#column_name#,'')>
+			<cfif compare(arguments.#column_name#,"")>
 				AND #left(i,1)#.#column_name# = <cfqueryparam cfsqltype="#result#" value="##arguments.#column_name###">
 			</cfif>'>
 	</cfloop>

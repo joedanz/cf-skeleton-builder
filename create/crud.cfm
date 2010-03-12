@@ -65,13 +65,6 @@
 <cfmodule template="##application.settings.mapping##/tags/layout.cfm" templatename="main" title="##application.settings.title## &raquo; CRUD &raquo; #i#">
 
 <cfoutput>
-<style type="text/css">
-table { width:100%; }
-ul.subnav { float:right; font-size:1.1em; }
-ul.subnav li { display:inline; font-weight:bold; }
-label { float:left; width:200px; text-align:right; margin-right:10px; }
-</style>
-
 <ul class="subnav">
 	<li><cfif not isDefined("url.new")>List<cfelse><a href="##cgi.script_name##?list">List</a></cfif></li> |
 	<li><cfif isDefined("url.new")>New<cfelse><a href="##cgi.script_name##?new">New</a></cfif></li>
@@ -100,7 +93,7 @@ label { float:left; width:200px; text-align:right; margin-right:10px; }
 		</cfif>
 	</cfloop>
 
-	<cfset thisCRUD = thisCRUD & '#chr(10)#		<input type="submit" name="add" value="Add New Record" id="sub" />
+	<cfset thisCRUD = thisCRUD & '#chr(10)#		<label for="sub">&nbsp;</label><input type="submit" name="add" value="Add New Record" id="sub" /> or <a href="##cgi.script_name##">Cancel</a>
 
 	</form>
 
@@ -131,7 +124,7 @@ label { float:left; width:200px; text-align:right; margin-right:10px; }
 		<cfset thisCRUD = thisCRUD & '		<input type="hidden" name="#column_name#" value="##record.#column_name###" />'>
 	</cfloop>
 
-	<cfset thisCRUD = thisCRUD & '#chr(10)#		<input type="submit" name="upd" value="Update Record" id="sub" /> or <a href="####" onclick="history.back();">Cancel</a>
+	<cfset thisCRUD = thisCRUD & '#chr(10)#		<label for="sub">&nbsp;</label><input type="submit" name="upd" value="Update Record" id="sub" /> or <a href="##cgi.script_name##">Cancel</a>
 
 	</form>
 
