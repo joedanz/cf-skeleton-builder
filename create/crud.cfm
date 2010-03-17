@@ -145,7 +145,8 @@
 
 	<cfset thisCRUD = thisCRUD & '#chr(10)#		<cfloop query="records">
 		<tr>
-			<td>##currentRow##</td><td>[<a href="##cgi.script_name##?edit=1&'>
+			<td>##currentRow##</td>
+			<td>[<a href="##cgi.script_name##?edit=1&'>
 
 		<cfloop query="primary_keys">
 			<cfset thisCRUD = thisCRUD & '&#column_name#=###column_name###'>
