@@ -132,19 +132,20 @@
 
 	<cfset records = application.#i#.get()>
 	<table cellpadding="2" cellspacing="0" border="1">
-	<tr>
-		<th>####</th>
-		<th>Action</th>'>
+	<thead>
+		<tr>
+			<th>####</th>
+			<th>Action</th>'>
 
 	<cfloop query="columns">
-		<cfset thisCRUD = thisCRUD & '#chr(10)#		<th>#column_name#</th>'>
+		<cfset thisCRUD = thisCRUD & '#chr(10)#			<th>#column_name#</th>'>
 	</cfloop>
 
-	<cfset thisCRUD = thisCRUD & '#chr(10)#	</tr>'>
+	<cfset thisCRUD = thisCRUD & '#chr(10)#		</tr>#chr(10)#	</thead>#chr(10)#	<tbody>'>
 
-	<cfset thisCRUD = thisCRUD & '#chr(10)#	<cfloop query="records">
-	<tr>
-		<td>##currentRow##</td><td>[<a href="##cgi.script_name##?edit=1&'>
+	<cfset thisCRUD = thisCRUD & '#chr(10)#		<cfloop query="records">
+		<tr>
+			<td>##currentRow##</td><td>[<a href="##cgi.script_name##?edit=1&'>
 
 		<cfloop query="primary_keys">
 			<cfset thisCRUD = thisCRUD & '&#column_name#=###column_name###'>
@@ -159,15 +160,14 @@
 		<cfset thisCRUD = thisCRUD & '" onclick="return confirm(''Are you sure you wish to delete this record?'');">x</a>]</td>'>
 
 		<cfloop query="columns">
-			<cfset thisCRUD = thisCRUD & '#chr(10)#		<td>###Column_name###</td>'>
+			<cfset thisCRUD = thisCRUD & '#chr(10)#			<td>###Column_name###</td>'>
 		</cfloop>
 
-	<cfset thisCRUD = thisCRUD & '	#chr(10)#	</tr>
-	</cfloop>'>
+	<cfset thisCRUD = thisCRUD & '	#chr(10)#		</tr>
+		</cfloop>'>
 
 	<cfset thisCRUD = thisCRUD & '
-	</tr>
-
+	</tbody>
 	</table>
 </cfif>
 
