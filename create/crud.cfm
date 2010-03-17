@@ -144,7 +144,7 @@
 
 	<cfset thisCRUD = thisCRUD & '#chr(10)#		<cfloop query="records">
 		<tr<cfif currentRow mod 2 eq 0> class="odd"</cfif>>
-			<td>##currentRow##</td>'>
+			<td>##currentRow##)</td>'>
 
 		<cfloop query="columns">
 			<cfset thisCRUD = thisCRUD & '#chr(10)#			<td>###Column_name###</td>'>
