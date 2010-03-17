@@ -134,35 +134,35 @@
 	<table cellpadding="2" cellspacing="0" border="1">
 	<thead>
 		<tr>
-			<th>####</th>
-			<th>Action</th>'>
+			<th>####</th>'>
 
 	<cfloop query="columns">
 		<cfset thisCRUD = thisCRUD & '#chr(10)#			<th>#column_name#</th>'>
 	</cfloop>
 
-	<cfset thisCRUD = thisCRUD & '#chr(10)#		</tr>#chr(10)#	</thead>#chr(10)#	<tbody>'>
+	<cfset thisCRUD = thisCRUD & '#chr(10)#			<th>Action</th>#chr(10)#		</tr>#chr(10)#	</thead>#chr(10)#	<tbody>'>
 
 	<cfset thisCRUD = thisCRUD & '#chr(10)#		<cfloop query="records">
 		<tr>
-			<td>##currentRow##</td>
-			<td>[<a href="##cgi.script_name##?edit=1&'>
-
-		<cfloop query="primary_keys">
-			<cfset thisCRUD = thisCRUD & '&#column_name#=###column_name###'>
-		</cfloop>
-
-		<cfset thisCRUD = thisCRUD & '">edit</a>] [<a href="##cgi.script_name##?del=1'>
-
-		<cfloop query="primary_keys">
-			<cfset thisCRUD = thisCRUD & '&#column_name#=###column_name###'>
-		</cfloop>
-
-		<cfset thisCRUD = thisCRUD & '" onclick="return confirm(''Are you sure you wish to delete this record?'');">x</a>]</td>'>
+			<td>##currentRow##</td>'>
 
 		<cfloop query="columns">
 			<cfset thisCRUD = thisCRUD & '#chr(10)#			<td>###Column_name###</td>'>
 		</cfloop>
+
+	<cfset thisCRUD = thisCRUD & '#chr(10)#			<td>[<a href="##cgi.script_name##?edit=1&'>
+
+	<cfloop query="primary_keys">
+		<cfset thisCRUD = thisCRUD & '&#column_name#=###column_name###'>
+	</cfloop>
+
+	<cfset thisCRUD = thisCRUD & '">edit</a>] [<a href="##cgi.script_name##?del=1'>
+
+	<cfloop query="primary_keys">
+		<cfset thisCRUD = thisCRUD & '&#column_name#=###column_name###'>
+	</cfloop>
+
+	<cfset thisCRUD = thisCRUD & '" onclick="return confirm(''Are you sure you wish to delete this record?'');">x</a>]</td>'>
 
 	<cfset thisCRUD = thisCRUD & '	#chr(10)#		</tr>
 		</cfloop>'>
