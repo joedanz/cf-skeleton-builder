@@ -131,7 +131,7 @@
 <cfelse>
 
 	<cfset records = application.#i#.get()>
-	<table cellpadding="2" cellspacing="0" border="1">
+	<table class="crud">
 	<thead>
 		<tr>
 			<th>####</th>'>
@@ -143,7 +143,7 @@
 	<cfset thisCRUD = thisCRUD & '#chr(10)#			<th>Action</th>#chr(10)#		</tr>#chr(10)#	</thead>#chr(10)#	<tbody>'>
 
 	<cfset thisCRUD = thisCRUD & '#chr(10)#		<cfloop query="records">
-		<tr>
+		<tr<cfif currentRow mod 2 eq 0> class="odd"</cfif>>
 			<td>##currentRow##</td>'>
 
 		<cfloop query="columns">
