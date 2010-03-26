@@ -64,6 +64,22 @@
 <!--- Loads header/footer --->
 <cfmodule template="##application.settings.mapping##/tags/layout.cfm" templatename="main" title="##application.settings.title## &raquo; CRUD &raquo; #i#">
 
+<cfif StructKeyExists(url,"edit") or StructKeyExists(url,"new")>
+	<cfsavecontent variable="js">
+	<cfoutput>
+	<script type="text/javascript">
+	    $(document).ready(function() {
+			$("input[type=''text'']:first", document.forms[0]).focus();
+			$("##form1").submit(function(){
+			    $("input[type=submit]", this).attr(''disabled'', ''disabled'');
+			});
+	    })
+	</script>
+	</cfoutput>
+	</cfsavecontent>
+	<cfhtmlhead text="##js##">
+</cfif>
+
 <cfoutput>
 <ul class="subnav">
 	<li><cfif not isDefined("url.new")>List<cfelse><a href="##cgi.script_name##?list">List</a></cfif></li> |
@@ -73,7 +89,7 @@
 
 <cfif StructKeyExists(url,"new")>
 
-	<form action="##cgi.script_name##" method="post">
+	<form action="##cgi.script_name##" method="post" id="####form1">
 	'>
 
 	<cfloop query="primary_keys">
@@ -93,8 +109,8 @@
 		</cfif>
 	</cfloop>
 
-	<cfset thisCRUD = thisCRUD & '#chr(10)#		<label for="sub">&nbsp;</label><input type="submit" name="add" value="Add New Record" id="sub" /> or <a href="##cgi.script_name##">Cancel</a>
-
+	<cfset thisCRUD = thisCRUD & '#chr(10)#		<label for="sub">&nbsp;</label><input type="submit" value="Add New Record" id="sub" /> or <a href="##cgi.script_name##">Cancel</a>
+		<input type="hidden" name="add" value="1" />
 	</form>
 
 <cfelseif StructKeyExists(url,"edit")>
@@ -108,7 +124,7 @@
 
 	<cfset thisCRUD = thisCRUD & ')>
 
-	<form action="##cgi.script_name##" method="post">
+	<form action="##cgi.script_name##" method="post" id="####form1">
 	'>
 
 	<cfloop query="non_primary_keys">
@@ -124,8 +140,8 @@
 		<cfset thisCRUD = thisCRUD & '		<input type="hidden" name="#column_name#" value="##record.#column_name###" />'>
 	</cfloop>
 
-	<cfset thisCRUD = thisCRUD & '#chr(10)#		<label for="sub">&nbsp;</label><input type="submit" name="upd" value="Update Record" id="sub" /> or <a href="##cgi.script_name##">Cancel</a>
-
+	<cfset thisCRUD = thisCRUD & '#chr(10)#		<label for="sub">&nbsp;</label><input type="submit" value="Update Record" id="sub" /> or <a href="##cgi.script_name##">Cancel</a>
+		<input type="hidden" name="upd" value="1" />
 	</form>
 
 <cfelse>
