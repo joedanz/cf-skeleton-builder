@@ -1,29 +1,56 @@
-body { 
-	margin:10px; 
-	background:#2b7fd2 url(../images/gradient.png) repeat-x; 
+/* === GENERIC CLASSES === */
+.b { font-weight:bold; }
+.center { margin:auto; }
+.rounded { -moz-border-radius:1ex; -webkit-border-radius:1ex; }
+
+
+body {
+	margin:10px;
+	background:#c3dce7 url(../images/background.png) repeat-x;
 }
 
-#container { 
-	background-color:#fcfff4; 
-	padding:8px 8px 8px 8px; 
-	width:670px; 
-	margin:auto; 
+.skeleton { position:fixed; top:30px; left:10%; margin:auto; z-index:10; background:url(../images/skeleton.png) no-repeat; height:400px; width:400px; }
+
+.login {
+	border:2px solid #ccc;
+	width:200px;
+	background:#fff url(../images/cf9.png) no-repeat;
+	padding:10px 10px 10px 150px;
+	height:128px;
+	margin-top:150px;
+	z-index:0;
 }
 
-#header { 
-	background-color:#3e6171; 
-	color:#fff; 
-	padding:5px 10px; 
-	text-align:center; 
+.login form { padding:5px 15px; }
+.login form input { padding:4px; }
+label { font-weight:bold; }
+.invalid { border:2px solid #fbc2c4;
+background:#fbe3e4 url(../images/alert.png) no-repeat 5px 50%; padding:5px; padding-left:25px;
+width:260px; margin-top:10px; color:#860006; font-weight:bold; font-style:italic; }
+
+#container {
+	background-color:#fcfff4;
+	padding:8px 8px 8px 8px;
+	width:670px;
+	margin:auto;
+	border:1px solid #ccc;
+}
+
+#header {
+	background-color:#3e6171;
+	color:#fff;
+	padding:5px 10px;
+	text-align:center;
 	margin-bottom:8px;
-	font-size:3em; 
+	font-size:3em;
 	font-weight:bold;
 }
 
-.row { 
-	background-color:#ccdbcd; 
-	padding:5px 10px; 
-	margin-bottom:8px; 
+.row {
+	background-color:#ccdbcd;
+	padding:5px 10px;
+	margin-bottom:8px;
+	clear:both;
 }
 
 .row label.step { font-size:1.6em; }
@@ -31,17 +58,15 @@ body {
 .row ul li { font-size:1.1em; margin-bottom:1px; }
 .row-last { margin-bottom:0; }
 div.note { margin-top:8px; }
+ul li.wrap { float:left; width:200px; }
 
-input.submit { 
-	float:right; 
-	width:200px; 
-	height:35px; 
-	font-size:1.4em; 
-	font-weight:bold; 
-	font-variant:small-caps; 
+input.submit {
+	float:right;
+	width:200px;
+	height:35px;
+	font-size:1.4em;
+	font-weight:bold;
+	font-variant:small-caps;
 }
 
-ul li.wrap { 
-	float:left; 
-	width:200px; 
-}
+.logout { text-align:center; width:300px; font-size:120%; }

@@ -1,10 +1,8 @@
 $(document).ready(function(){
-	$('div#container').corner();
+	$('div#container').corner("bottom");
 	$('div#header').corner();
 	$('div.row').corner();
-	showTables()
-	$('input, textarea, select').focus(function(){ $(this).css('background-color', '#ffc'); });
-	$('input, textarea, select').blur(function(){ $(this).css('background-color', '#fff'); });
+	showTables();
 	$('#appName').focus();
 });
 
@@ -12,5 +10,14 @@ function showTables() {
 	if ($('#dsource').val() == '') {
 		$('#step9').hide();
 	} else $('#step9').show();
+
+	$.ajax({
+	  url: 'ajax/getTables.cfm',
+	  data: 'ds=' + $('#dsource').val(),
+	  success: function(data) {
+	    $('#tables').html(data);
+	  }
+	});
+
 }
 

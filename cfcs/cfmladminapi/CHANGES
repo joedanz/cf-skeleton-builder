@@ -1,0 +1,24 @@
+/* $Id: CHANGES 12 2009-12-12 17:07:55Z dcepler $ */
+
+=Changes=
+
+==Version 0.4 (December 12, 2009) ==
+* added verifyDatasource() to CFMLAdmin API
+* implemented databasetype="oracle" for all CFML Engines
+* modified Ant script to add .disabled to cfmladminremoteapi.cfc so user has to explicitly enable it for security
+* updated generated documentation
+
+==Version 0.3 (November 26, 2009)==
+* added clearTemplateCache() to CFMLAdmin API
+* added support for Railo 3.1.2, changed CFMLAdmin API creation so that it looks for major_minor if specific version of CFC is not found
+* clarified cfmladminapi.*.FAILED throw messages to include underlying CFML Engine error
+* updated generated documentation
+* finally created Ant script to package releases
+
+==Version 0.2 (November 15, 2009)==
+* changed default behavior of databasetype="mssql" for Railo and Open BlueDragon to use the jTDS driver instead of Microsoft
+* implemented databasetype="jdbc" for all CFML Engines
+* changed database and server arguments on setDatasource() to be optional, now checks for values to be set based upon databasetype
+* added support for Open BlueDragon 1.2
+* updated generated documentation
+* more experimentation with Ant remotely invoking cfmladminremoteapi.cfc

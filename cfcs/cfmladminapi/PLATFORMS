@@ -1,0 +1,13 @@
+/* $Id: PLATFORMS 12 2009-12-12 17:07:55Z dcepler $ */
+
+==Supported CFML Engines==
+* Adobe ColdFusion 7.0.2, 8.0.1, 9.0.0
+* Open BlueDragon 1.1, 1.2
+* Railo 3.1.x
+   
+==Tested Platforms==
+* Adobe ColdFusion 8.0.1 (developer edition, standalone, JDK 1.6.0_15, CHF 3) on Mac OS X 10.5.8
+* Adobe ColdFusion 9.0.0 (developer edition, standalone, JDK 1.6.0_15) on Mac OS X 10.5.8
+* Open BlueDragon 1.1 (Ready2Run Jetty+OpenBD) on Mac OS X 10.5.8
+* Open BlueDragon 1.2 (Ready2Run Jetty+OpenBD) on Mac OS X 10.5.8
+* Railo 3.1.1 (express) on Mac OS X 10.5.8

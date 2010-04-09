@@ -9,7 +9,7 @@
 <cfdirectory action="list" directory="#ExpandPath('./skins/' & form.template & '/images/')#" name="images" />
 
 <!--- copy alert image --->
-<cffile action="copy" source="#ExpandPath('./images/')#alert.gif" destination="#ExpandPath('./tmp/images/')#" />
+<cffile action="copy" source="#ExpandPath('./images/')#alert.png" destination="#ExpandPath('./tmp/images/')#" />
 
 <!--- copy images for template --->
 <cfloop query="images">

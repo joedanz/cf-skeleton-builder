@@ -4,6 +4,7 @@
 
 <cfif isDefined("url.logout")>
 	<cflogout />
+	<cfset session.loggedin = false>
 </cfif>
 
 <cfscript>

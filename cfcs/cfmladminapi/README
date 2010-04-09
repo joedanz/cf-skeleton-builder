@@ -1,0 +1,32 @@
+/* $Id: README 12 2009-12-12 17:07:55Z dcepler $ */
+
+=CFMLAdmin API=
+
+==CFML Engine Implementation Details==
+
+===Adobe ColdFusion===
+* CFMLAdmin API does not accept RDS Password to login.
+
+===Open BlueDragon===
+
+===Railo===
+* All CFMLAdmin API calls execute against the current web context and not server-wide
+* All CFMLAdmin API calls execute only on current server, does not use remoteClients attribute on Railo's cfadmin tag
+
+==Database Implementation Details==
+
+===My SQL===
+* setDatasource() databasetype="mysql" on Adobe ColdFusion defaults to MySQL5 driver
+
+===Microsoft SQL Server===
+* setDatasource() databasetype="mssql" on Railo and Open BlueDragon defaults to using the jTDS JDBC driver  
+
+===Oracle===
+* setDatasource() databasetype="oracle" on Railo and Open BlueDragon uses thin driver and not OCI
+* setDatasource() databasetype="oracle" on Adobe ColdFusion Standard Edition does not work, since using DataDirect drivers shipped by Adobe  
+
+===Other JDBC===
+* Open BlueDragon requires a validation query when connecting to an other JDBC driver, CFMLAdmin API defaults this to "SELECT 1"
+ 
+==Remote Access to CFMLAdmin API==
+* By default .disabled is added to the end of the filename cfmladminremoteapi.cfc so it cannot be invoked, to enable remove .disabled

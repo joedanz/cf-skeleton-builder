@@ -1,0 +1,121 @@
+<!--- $Id: cfmladminremoteapi.cfc 12 2009-12-12 17:07:55Z dcepler $ --->
+<!---
+	Copyright 2009 David C. Epler - http://www.dcepler.net
+
+	This file is part of of the CFML Admin API.
+
+	The CFML Admin API is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Lesser General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	The CFML Admin API is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public License
+	along with the CFML Admin API.  If not, see <http://www.gnu.org/licenses/>.
+--->
+<cfcomponent displayname="CFMLAdmin Remote API" output="false" hint="CFMLAdmin Remote API">
+
+	<cffunction name="getDatasource" access="remote" returntype="string" returnformat="plain" output="false" hint="Returns specified datasource in common CFMLAdminAPI datasource structure (converted to XML)">
+		<cfargument name="adminPassword" type="string" required="true" hint="administrator password" />
+		<cfargument name="adminUsername" type="string" default="" hint="administrator username (<strong>ColdFusion 8+ only</strong>)" />
+		<cfargument name="adminAPIPath" type="string" default="" hint="override default Admin API path (<strong>ColdFusion & Open BlueDragon only</strong>)" />
+		<cfargument name="dsn" type="string" required="true" hint="Name of the datasource to be retrieved" />
+
+		<cfset var local = StructNew() />
+
+		<cfset local.adminAPI = createObject("component", "cfmladminapi").init(arguments.adminPassword, arguments.adminUsername, arguments.adminAPIPath) />
+
+		<cftry>
+			<cfset local.result = local.adminAPI.getDatasource(arguments.dsn) />
+			<cfcatch>
+				<cfset local.result = toXML(cfcatch, "error") />
+			</cfcatch>
+		</cftry>
+
+		<cfif IsDefined("local.result")>
+			<cfif NOT IsSimpleValue(local.result)>
+				<cfset local.result = toXML(local.result, "datasource") />
+			</cfif>
+
+			<cfreturn local.result />
+		</cfif>
+
+	</cffunction>
+
+	<cffunction name="getDatasources" access="remote" returntype="string" returnformat="plain" output="false" hint="Returns datasources in common CFMLAdminAPI datasource structure (converted to XML)">
+		<cfargument name="adminPassword" type="string" required="true" hint="administrator password" />
+		<cfargument name="adminUsername" type="string" default="" hint="administrator username (<strong>ColdFusion 8+ only</strong>)" />
+		<cfargument name="adminAPIPath" type="string" default="" hint="override default Admin API path (<strong>ColdFusion & Open BlueDragon only</strong>)" />
+
+		<cfset var local = StructNew() />
+
+		<cfset local.adminAPI = createObject("component", "cfmladminapi").init(arguments.adminPassword, arguments.adminUsername, arguments.adminAPIPath) />
+
+		<cftry>
+			<cfset local.result = local.adminAPI.getDatasources() />
+			<cfcatch>
+				<cfset local.result = toXML(cfcatch, "error") />
+			</cfcatch>
+		</cftry>
+
+		<cfif IsDefined("local.result")>
+			<cfif NOT IsSimpleValue(local.result)>
+				<cfset local.result = toXML(local.result, "datasources") />
+			</cfif>
+
+			<cfreturn local.result />
+		</cfif>
+
+	</cffunction>
+
+<!---
+Convert Structures/Arrays (including embedded) to XML.
+
+@param input      Data to convert into XML. (Required)
+@param element      Used to name the root element. (Required)
+@return Returns a string.
+@author Phil Arnold (philip.r.j.arnold@googlemail.com)
+@version 0, September 9, 2009
+--->
+<cffunction name="toXML" access="private" returntype="string" output="false" hint="Convert structures/arrays (including embedded) to XML">
+    <cfargument name="input" type="any" required="true" hint="data to convert into XML" />
+    <cfargument name="element" type="string" required="true" hint="name of the root element" />
+    <cfscript>
+        var i = 0;
+        var s = "";
+        var s1 = "";
+        s1 = arguments.element;
+        if (right(s1, 1) eq "s") {
+            s1 = left(s1, len(s1)-1);
+        }
+
+        s = s & "<#lcase(arguments.element)#>";
+        if (isArray(arguments.input)) {
+            for (i = 1; i lte arrayLen(arguments.input); i = i + 1) {
+                if (isSimpleValue(arguments.input[i])) {
+                    s = s & "<#lcase(s1)#>" & arguments.input[i] & "</#lcase(s1)#>";
+                } else {
+                    s = s & toXML(arguments.input[i], s1);
+                }
+            }
+        } else if (isStruct(arguments.input)) {
+            for (i in arguments.input) {
+                if (isSimpleValue(arguments.input[i])) {
+                    s = s & "<#lcase(i)#>" & arguments.input[i] & "</#lcase(i)#>";
+                } else {
+                    s = s & toXML(arguments.input[i], i);
+                }
+            }
+        } else {
+            s = s & XMLformat(arguments.input);
+        }
+        s = s & "</#lcase(arguments.element)#>";
+    </cfscript>
+    <cfreturn s />
+</cffunction>
+
+</cfcomponent>
