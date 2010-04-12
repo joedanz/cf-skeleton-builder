@@ -15,13 +15,14 @@ body {
 	border:2px solid #ccc;
 	width:200px;
 	background:#fff url(../images/cf9.png) no-repeat;
-	padding:10px 10px 10px 150px;
-	height:128px;
+	padding:5px 10px 10px 150px;
+	height:133px;
 	margin-top:150px;
 	z-index:0;
 }
 
 .login form { padding:5px 15px; }
+.login form p { margin-bottom:10px; }
 .login form input { padding:4px; }
 label { font-weight:bold; }
 .invalid { border:2px solid #fbc2c4;

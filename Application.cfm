@@ -9,7 +9,7 @@
 
 <cfscript>
 	request.jqueryURL 		 = "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js";
-	request.jqueryUIURL		 = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js";
+	request.jqueryUIURL		 = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js";
 	request.jqueryCornerURL  = "http://jqueryjs.googlecode.com/svn/trunk/plugins/corner/jquery.corner.js";
 	request.prototypeURL 	 = "http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js";
 	request.scriptaculousURL = "http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js";

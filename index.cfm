@@ -13,8 +13,9 @@
 	</cftry>
 </cfif>
 
-<!--- login window popup --->
+<!--- login page --->
 <cfif not StructKeyExists(session,"loggedin") or not session.loggedin>
+	<cfsetting showdebugoutput="false">
 	<cfoutput>
 	<html>
 	<head>
@@ -269,12 +270,14 @@ $(document).ready(function(){
 	<input type="checkbox" name="reset" value="1" checked="checked" />
 </div>
 
+<cfset datasources = session.adminAPI.getDatasources()>
+
 <div class="row" id="step8">
 	<label for="ds" class="step">Step 8: Choose the datasource for your application:</label>
 	<select name="dsource" id="dsource" style="padding:1px;">
 		<option value="">None</option>
-		<cfloop index="x" from="1" to="#arrayLen(session.adminAPI.getDatasources())#">
-		   <option value="#session.adminAPI.getDatasources()[x].name#">#session.adminAPI.getDatasources()[x].name#</option>
+		<cfloop index="x" from="1" to="#arrayLen(datasources)#">
+		   <option value="#datasources[x].name#">#datasources[x].name#</option>
 		</cfloop>
 	</select>
 </div>
