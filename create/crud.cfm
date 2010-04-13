@@ -71,7 +71,7 @@
 	<script type="text/javascript">
 	    $(document).ready(function() {
 			$("input[type=''text'']:first", document.forms[0]).focus();
-			$("##form1").submit(function(){
+			$("####form1").submit(function(){
 			    $("input[type=submit]", this).attr(''disabled'', ''disabled'');
 			});
 	    })
