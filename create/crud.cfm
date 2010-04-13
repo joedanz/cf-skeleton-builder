@@ -30,6 +30,7 @@
 	</cfloop>
 
 	<cfset thisCRUD = thisCRUD & ')>
+	<cfset url.deleted = true>
 <cfelseif StructKeyExists(form,"add")>
 	<cfset application.#i#.create('>
 
