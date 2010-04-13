@@ -13,9 +13,9 @@
 <!--- retrieve prototype.js from site --->
 <cfhttp url="#jsscriptURL#" result="jsfile" />
 
-<!--- write prototype.js out to js directory --->
-<cffile action="write" 
-	file="#ExpandPath('./tmp/js/')##jsscript#.js" 
+<!--- write javascript out to js directory --->
+<cffile action="write"
+	file="#ExpandPath('./tmp/js/')##jsscript#.js"
 	output="#jsfile.fileContent#" />
-	
+
 </cfif>
