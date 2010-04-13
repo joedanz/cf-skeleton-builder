@@ -1,5 +1,6 @@
 <cfsetting enablecfoutputonly="true">
 
+<!--- try to login --->
 <cfif StructKeyExists(form,"username")>
 	<cftry>
 	<cfset request.AdminAPI = createObject("component", "skeleton.cfcs.CFMLAdminAPI.cfmladminapi").init("#form.password#") />
@@ -63,6 +64,7 @@
 	<cfabort>
 </cfif>
 
+<!--- generate code --->
 <cfif isDefined("create")>
 
 	<cfparam name="form.CFCs" default="">
@@ -283,14 +285,14 @@ $(document).ready(function(){
 </div>
 
 <div class="row" id="step9">
-	<label class="step">Step 9: Select tables to create CFCs &amp; CRUD pages for:</label>
+	<label class="step">Step 9: Select tables for which to create CFCs &amp; CRUD pages:</label>
 	<ul id="tables">
 	</ul>
 	<br clear="both" />
 </div>
 
 <div class="row row-last">
-	<input type="submit" value="Create Application" name="create" class="submit" />
+	<input type="submit" value="Generate Application" name="create" class="submit generate" />
 	<h4>The following folders will be created by default:</h4>
 	admin, cfcs, config, css, images, tags, templates
 </div>
