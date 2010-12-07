@@ -3,14 +3,14 @@
 <!--- try to login --->
 <cfif StructKeyExists(form,"username")>
 	<cftry>
-	<cfset request.AdminAPI = createObject("component", "skeleton.cfcs.CFMLAdminAPI.cfmladminapi").init("#form.password#") />
-	<cfif request.AdminAPI.login()>
-		<cfset session.loggedin = true>
-		<cfset session.adminAPI = request.adminAPI>
-	</cfif>
-	<cfcatch>
-		<cfset invalidLogin = true>
-	</cfcatch>
+		<cfset request.AdminAPI = createObject("component", "skeleton.cfcs.CFMLAdminAPI.cfmladminapi").init("#form.password#") />
+		<cfif request.AdminAPI.login()>
+			<cfset session.loggedin = true>
+			<cfset session.adminAPI = request.adminAPI>
+		</cfif>
+		<cfcatch>
+			<cfset invalidLogin = true>
+		</cfcatch>
 	</cftry>
 </cfif>
 
@@ -272,12 +272,11 @@ $(document).ready(function(){
 	<input type="checkbox" name="reset" value="1" checked="checked" />
 </div>
 
-<cfset datasources = session.adminAPI.getDatasources()>
-
 <div class="row" id="step8">
 	<label for="ds" class="step">Step 8: Choose the datasource for your application:</label>
 	<select name="dsource" id="dsource" style="padding:1px;">
 		<option value="">None</option>
+		<cfset datasources = session.adminAPI.getDatasources()>
 		<cfloop index="x" from="1" to="#arrayLen(datasources)#">
 		   <option value="#datasources[x].name#">#datasources[x].name#</option>
 		</cfloop>

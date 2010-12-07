@@ -17,7 +17,7 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with the CFML Admin API.  If not, see <http://www.gnu.org/licenses/>.
 --->
-<cfcomponent displayname="CFMLAdmin API - Adobe ColdFusion 9.0.0" output="false" hint="CFMLAdmin API Layer for Adobe ColdFusion 9.0.0" extends="base">
+<cfcomponent displayname="CFMLAdmin API - Adobe ColdFusion 9.0.1" output="false" hint="CFMLAdmin API Layer for Adobe ColdFusion 9.0.1" extends="base">
 
 	<cffunction name="init" access="public" returntype="any" output="false" hint="">
 		<cfargument name="password" type="string" required="true" hint="administrator password" />
