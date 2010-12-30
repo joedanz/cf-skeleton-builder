@@ -174,6 +174,14 @@ $(document).ready(function(){
     $('##dsource').change(function() {
         showTables();
     });
+    $('##selall').click(function () {
+		$("li.wrap input").each(function() { this.checked = true; });
+		return false;
+	});
+    $('##unselall').click(function () {
+		$("li.wrap input").each(function() { this.checked = false; });
+		return false;
+	});
 });
 </script>
 </head>
@@ -285,6 +293,7 @@ $(document).ready(function(){
 
 <div class="row" id="step9">
 	<label class="step">Step 9: Select tables for which to create CFCs &amp; CRUD pages:</label>
+	<a href="##" id="selall">Select All</a> / <a href="##" id="unselall">Unselect All</a><br />
 	<ul id="tables">
 	</ul>
 	<br clear="both" />
